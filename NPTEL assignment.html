@@ -1,0 +1,132 @@
+04.23 9:53 PM
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NPTEL Assignment Score Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h2, h3 {
+      color: #333;
+    }
+    .note {
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      color: #856404;
+    }
+    .section {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+    input[type="number"] {
+      width: 60px;
+      margin: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>NPTEL Assignment Score Calculator</h2>
+  <div class="note">
+    <strong>Note:</strong> If you haven't done an assignment, enter <strong>0</strong> for that assignment.
+  </div>
+
+  <!-- Industrial 4.0 & IoT -->
+  <div class="section">
+    <h3>Industrial 4.0 & IoT (Best 8 out of 12 Assignments)</h3>
+    <div id="iotInputs">
+      <script>
+        for (let i = 1; i <= 12; i++) {
+          document.write(`<label>Assignment ${i}: <input type="number" id="iot${i}" min="0" max="100" value="0"></label><br>`);
+        }
+      </script>
+    </div>
+    <div id="iotResult" class="result"></div>
+  </div>
+
+  <!-- Energy Resources Economics -->
+  <div class="section">
+    <h3>Energy Resources Economics (Best 6 out of 12 Assignments)</h3>
+    <div id="energyInputs">
+      <script>
+        for (let i = 1; i <= 12; i++) {
+          document.write(`<label>Assignment ${i}: <input type="number" id="energy${i}" min="0" max="100" value="0"></label><br>`);
+        }
+      </script>
+    </div>
+    <div id="energyResult" class="result"></div>
+  </div>
+
+  <button onclick="calculateAll()">Calculate All Scores</button>
+
+  <div class="result" id="finalResult"></div>
+
+  <div class="footer">
+    Created by Sharath Techno Byte
+  </div>
+
+  <script>
+    function calculateScore(subject, count) {
+      let scores = [];
+      for (let i = 1; i <= 12; i++) {
+        let val = parseFloat(document.getElementById(subject + i).value);
+        if (!isNaN(val)) scores.push(val);
+      }
+
+      scores.sort((a, b) => b - a);
+      let best = scores.slice(0, Math.min(count, scores.length));
+      let average = best.reduce((sum, val) => sum + val, 0) / best.length;
+      let final = average * 0.25;
+
+      return { score: final };
+    }
+
+    function calculateAll() {
+      let iot = calculateScore("iot", 8);
+      let energy = calculateScore("energy", 6);
+
+      document.getElementById("iotResult").innerHTML = `Score: ${iot.score.toFixed(2)} / 25`;
+      document.getElementById("energyResult").innerHTML = `Score: ${energy.score.toFixed(2)} / 25`;
+
+      const finalResult = document.getElementById("finalResult");
+
+      if (iot.score >= 10 && energy.score >= 10) {
+        finalResult.innerHTML = `<hr><span style="color:green;">You are eligible for certificate.</span>`;
+      } else {
+        finalResult.innerHTML = `<hr><span style="color:red;">Not eligible for certificate: Each score must be at least 10/25.</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
